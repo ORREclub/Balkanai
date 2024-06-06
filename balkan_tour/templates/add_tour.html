@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Add Tour - Balkan Bike Tours
+{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/clients.css') }}">
+    <h1>Add Tour</h1>
+    <form action="{{ url_for('add_tour') }}" method="post">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br>
+        <!--Aurimas mane trukteletu už šituos <br>, bet tingiu kolkas deliot i divus ir paragrafus-->
+
+        <label for="location">Location:</label>
+        <input type="text" id="location" name="location" required><br>
+
+        <label for="description">Description:</label>
+        <textarea id="description" name="description" required></textarea><br>
+
+        <input type="submit" value="Add Tour">
+    </form>
+
+    <h1>Tours</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Location</th>
+                <th>Description</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for tour in tours %} <!-- iteruoju loopa per Tour lentele -->
+                    <td>{{ tour.id }}</td>
+                    <td>{{ tour.name }}</td>
+                    <td>{{ tour.location }}</td>
+                    <td>{{ tour.description }}</td>
+                    <td>
+                       <form action="{{ url_for('delete_tour', tour_id=tour.id) }}" method="post">
+                            <button type="submit" name="tour_id" value="{{ tour.id }}">Delete</button>
+                           <!--Kai paspaudziu "Delete" mygtuką, forma siunčia POST užklausą į URL, kurį sugeneravo url_for('delete_tour', tour_id=tour.id). Flask maršrutas delete_client gauna šią užklausą, paima tour_id iš URL ir tada ištrina atitinkamą klientą iš duomenų bazės-->
+                       </form>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}  <!-- zymi for ciklo pabaiga -->
+        </tbody>
+    </table>
+{% endblock %}
